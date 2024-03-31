@@ -58,6 +58,8 @@ flask --app run run --debug
 #### Web Client
 The web client is build with `Python`, `Jinja`, `HTML`, `CSS`, `Bootstrap` and `JavaScript`
 There is Login and Registration page. Form validation is handled on server side and users are notified if form validation fails.
+Each user has their own personal folder in the server where they can expand further.
+`users_space/username` is the location for each user that we have and this is also the root for them at `username`.
 The web client consists of simple UI where users can see their current path in their space with properties for files and folders.
 Create new folder, rename files and folders, delete files and folders, navigate and upload are the operations users can perform.
 The web client and server are developed under Linux and the os commands used are for Linux only. 
