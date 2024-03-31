@@ -1,63 +1,111 @@
-# *Getting Started*
+# File Browser
 
-Get started by creating a fork of this repository. Do feel encouraged to go above and beoynd when it comes to additional features and enhancements that are not part of this document.
+# Readme Structure
+- [UI Preview](#ui-Preview)
+- [Introduction](#introduction)
+- Video Demo <https://www.youtube.com/watch?v=Uc2_M43Wz_w>
+- [How To Install](#how-to-install)
+- [Web Client](#web-client)
+- [File System Interaction](#file-system-interaction)
+- [Folder Navigation](#folder-navigation)
+- [File Manipulation](#file-manipulation)
+- [Security Considerations](#security-considerations)
+- [Used Languages and Tools](#used-languages-and-tools)
+- [Ways to improve the app](#ways-to-improve-the-app)
 
-### *Deadline*
+#### UI Preview
+![File Browser](https://github.com/Acrofil/private_ocado/blob/main/file_browser_preview.png)
 
-* April 1st 2024
+## Introduction
+This is simple file browser build with Flask. 
+The server interacts with `Linux` filesystems using Python `os` module to perform the tasks.
+Each user has their own private root folder on the server where they can perform basic operations such as
+- Navigating file system
+- Create folders 
+- Upload files
+- Rename files and folders 
+- Delete files and folders.
 
-### *Submission Guidelines*
+#### Video Demo: 
+<https://www.youtube.com/watch?v=Uc2_M43Wz_w>
 
-Submit the source code of your web server and web client along with any necessary configuration files.
-Include documentation detailing how to set up and run the server and client locally on the chosen operating system.
-Provide a brief explanation of your design choices, challenges faced, and any additional features implemented.
+### How To Install
+##### Clone the repo and cd into it
+```bash
+git clone https://github.com/Acrofil/emerging-talents-2024-at-exercise/
+cd emerging-talents-2024-at-exercise
+```
 
-### *Evaluation Criteria*
+##### Create env and activate it
+```bash
+python -m venv env
+source ./env/bin/activate
+```
 
-* Functionality - Does the web server and client fulfill the requirements outlined in the assignment?
-* Code Quality - Are the code for the server and client well-structured, readable, and properly documented?
-* User Interface - Is the UI of the web client intuitive and user-friendly?
-* Error Handling - How effectively are errors handled throughout the application?
-* Security - Are appropriate security measures implemented to protect server resources?
+##### Install from requirements.txt and create db
+```bash
+pip install -r requirements.txt
+python
+from file_browser import db
+db.create_all()
+```
 
-# *Key Objectives*
+##### Run flask app in debug mode
+```bash
+flask --app run run --debug
+```
 
-Implement a web server that interacts with the file system, allowing users to perform basic file operations such as uploading, downloading, renaming files, and navigating through the folder structure.
-
-### *Web Server*
-
-Develop a web server using either Golang, Node.JS, Python or Java. Focus on a single operating system - Linux, Windows or OS X. The server shall be able to flawlessly work with the chosen operating system. All capabilities are to be exposed via HTTP requests and responses.
-
-##### API
-
-* __*[Optional]*__ Create API documentation that provides details about the supported requests and responses.
-
-##### Security Considerations
-
-* __*[Optional]*__ Implement appropriate security measures to prevent unauthorised access to files and server resources.
-* __*[Optional]*__ Use techniques such as authentication and authorization to ensure data integrity and confidentiality.
+#### Web Client
+The web client is build with `Python`, `Jinja`, `HTML`, `CSS`, `Bootstrap` and `JavaScript`
+There is Login and Registration page. Form validation is handled on server side and users are notified if form validation fails.
+The web client consists of simple UI where users can see their current path in their space with properties for files and folders.
+Create new folder, rename files and folders, delete files and folders, navigate and upload are the operations users can perform.
+The web client and server are developed under Linux and the os commands used are for Linux only. 
+No support for now for other OS's.
 
 ##### File System Interaction
+File system interaction is handled by `Python` and `os` module. File information is displayed with the `os.stat()` and then converted to human readable data.
+* Navigate throuh user space by clicking the backward arrow or hitting the folder icon to go back to the root folder.
+* Create new folders.
+* Upload files. 
+* Rename files and folders.
+* Delete files and folders (for folders only empty folders can be deleted).
 
-* Implement functionalities to interact with the file system (incl. upload, download, delete, rename) as well as navigating through the folder structure.
-* Ensure appropriate error handling for file operations.
+#### Folder Navigation
+Each user has his own root folder. In this example their path is `/home/username`
+- Users can navigate in their folders in 3 ways
+* By clicking on the root folder icon next to the path indicator
+* Go in a folder by clicking unto it or clicking the arrow next to the other interaction buttons
+* By going back from the arrow icon
 
-### *Web Client*
+#### File Manipulation
+Users can perform basic operations which include:
+* Create new folders
+* Upload files 
+* Download files and check hash data for integrity
+* Read/view files directly in the client
+* Rename files and folders
+* Delete files and folders
 
-Create a web client with a simple user interface (UI) to interact with the web server. The web client can be developed using HTML, CSS, and JavaScript (or other). Besides the ability to navigate the file system, it should be also possible to upload, download and rename files. Looks isn't everything... unless we're talking about UI - we'd love to see one that is both intuitive and user-friendly.
+#### Security Considerations
+For the security of the web server are considered the following: 
+* Login is requiered to perform any operations
+* Users cannot manipulate other users folders and files. This is done by storing the user name/id in the session
+* For handling special cases like `..`, `../..` all files and folders are sanitized/secured.
+* File upload is possible only for supported formats `[jpg, jpeg, pdf, txt, gif, 'png]` and maximum size of 15mb. 
+* Each user input is validated and sanitized
+* Renaming of files is possible only for the main text not the suffix after .
 
-##### Folder Navigation
+##### Used Languages and Tools:
+* Flask, flask_login, wtforms, flask_wtf, flask_sqlalchemy, sqlite3, JavaScript, Jinja, HTML, CSS, Bootstrap, Git, Linux, VsCode
 
-* Allow users to navigate through the folder structure of the file system using the web client.
-* Display the current directory and list its contents (files and subfolders) in the UI.
-* Provide options for users to navigate into subfolders and navigate back to parent folders.
-
-##### File Manipulation
-
-* Allow users to upload files to the server through the web client.
-* __*[Optional]*__ Implement validation to restrict the types and sizes of files that can be uploaded.
-* Enable users to download files from the server through the web client.
-* Ensure that downloaded files are intact and identical to the original files.
-* Provide functionality for users to rename files stored on the server through the web client.
-* __*[Optional]*__ Validate user inputs and handle renaming operations securely.
-
+##### Ways to improve the app
+* Add tooltip information for better UI experience
+* Add more confirmation checks for some operations
+* Support wider range of files
+* Validate files using library like libmagick
+* Scan files for malicious code using ClamAV
+* Add more features to the database like store files on remote server and only store the cdn related to the user id
+* Use different database
+* Support other OS's
+* Make Docker image

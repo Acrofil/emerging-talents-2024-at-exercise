@@ -1,0 +1,115 @@
+{% extends "home/layout.html" %}
+
+{% block title %}
+    File Browser
+{% endblock title %}
+
+{% block body %}
+
+  <section class="bg-light vh-100 vw-100">
+
+    <div class="container mt-3 d-flex mb-1 border-primary border-bottom">
+
+        <div class="mt-5 me-2">
+          <!-- Form for creating new folder -->
+          <form action="{{ url_for('create_folder') }}", method="POST">
+            {{ create_folder_form.csrf_token }}
+            {{ create_folder_form.folder_name.label(class="hide-labels", for="folder_name")}}
+            {{ create_folder_form.folder_name(class="form-control form-control-md") }}
+            {{ create_folder_form.folder_path(class="", value=path_indicator) }}
+            {{ create_folder_form.create_btn(class="btn btn-primary btn-sm w-100 mt-1") }}
+          </form>
+        </div>
+
+        <div class="input-group mb-2 mt-5 text-center">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">
+              <a href="{{ url_for('return_to_root') }}"><i class="bi bi-folder2 text-primary"></i></a>
+            </span>
+            <input type="text"
+             class="form-control form-control-md bg-secondary text-light"
+              aria-label="current_working_directory"
+              aria-describedby="working_directory"
+              value="{{ path_indicator }}"
+              name="path_indicator"
+              readonly>
+          </div>
+
+          <div class="form-outline w-100 mt-1">
+            <form action="{{ url_for('upload_file') }}" method="POST" enctype=multipart/form-data>
+              {{ upload_file_form.csrf_token }}
+              {{ upload_file_form.upload_file_name.label(class="hide-labels", for="upload_file_name") }}
+              <div class="d-flex">
+                {{ upload_file_form.folder_path(class="", value=path_indicator) }} 
+                {{ upload_file_form.upload_file_name(class="form-control form-control-md w-100", id="upload_file_name") }}
+                {{ upload_file_form.upload_btn(class="btn btn-primary btn-sm") }}
+              </div>
+            </form>
+          </div>
+        </div>
+            </div>
+      
+    <div class="container bg-light">
+          <table style="width: 100%;" class="ms-4 me-4">
+            <thead>
+              <tr>
+                <th>Type/Name</th>
+                <th>Created Time</th>
+                <th>Modified Time</th>
+                <th>Size</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if not parent_path == '..' %}
+              <tr>
+                <td>
+                  <a href="">
+                    <a href="{{ url_for('index', requested_path=parent_path) }}" class="return_arrow" class="text-primary"><i class="bi bi-arrow-90deg-left"> ..</i></a>
+                  </a>
+                </td>
+              </tr>
+              {% endif %}
+              {% for file in files %}
+                <tr>
+                  <td id="td_for_rename">
+                    <span class="hide_display_name">
+                      <a href="{{ url_for('index', requested_path=file.file_link) }}" 
+                      class="index_files">
+                      <i class="{{ file.file_icon }} text-primary"></i> 
+                      {{ file.name }}
+                    </a>
+                    </span>
+                    <input
+                      class="bg-light index_files new_file_name" 
+                      type="text"
+                      id="new_file_name"
+                      value="{{file.name}}"
+                      readonly
+                      hidden>
+                    <input class="display_name" type="text" value="{{file.name}}" hidden readonly>
+                    <button type="submit" class="save_btn bg-success text-light px-2" value={{path_indicator}} hidden>Save</button>
+                    <button type="submit" class="cancel_btn bg-danger text-light px-2" hidden>Cancel</button>
+                  </td>
+                  <td>{{ file.created_time }}</td>
+                  <td>{{ file.modified_time }}</td>
+                  <td>{{ file.size }}</td>
+                  <td>
+                    {% if 'file' in file.file_icon %}
+                    <a href="{{ url_for('download', requested_file=file.file_link) }}" class="ms-2"><i class="bi bi-box-arrow-down h4"></i></a>
+                    {% else %}
+                      <a class="ms-2" href="{{ url_for('index', requested_path=file.file_link) }}"><i class="bi bi-arrow-right-square-fill h4"></i></a>
+                    {% endif %}
+                    <i class="bi bi-pencil-square h4 edit_file_name"></i>
+                    <i style="color: red;" class="bi bi-x-square-fill h4 delete_file delete_btn" value={{path_indicator}}></i>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+    </div>
+  </section>
+
+
+
+{% endblock %}

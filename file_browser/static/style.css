@@ -1,0 +1,20 @@
+.hide-labels {
+    display: none;
+}
+
+.index_files {
+    font-size: 20px;
+    font-weight: 500;
+    text-decoration: none;
+    color: rgb(104, 71, 71)
+}
+
+.return_arrow {
+    text-decoration: none;
+}
+
+#rename_file {
+    outline: none;
+    border: 0px;
+    cursor: pointer;
+}
