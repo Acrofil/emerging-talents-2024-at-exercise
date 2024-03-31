@@ -14,7 +14,7 @@
 - [Ways to improve the app](#ways-to-improve-the-app)
 
 #### UI Preview
-![File Browser](https://github.com/Acrofil/private_ocado/blob/main/file_browser_preview.png)
+![File Browser] (https://github.com/Acrofil/emerging-talents-2024-at-exercise/blob/main/file_browser_preview.png)
 
 ## Introduction
 This is simple file browser build with Flask. 
