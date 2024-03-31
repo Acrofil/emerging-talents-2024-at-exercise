@@ -22,15 +22,15 @@ def get_user_upload_folder():
     Gets the current user working directory.
     Returns None if there is no such user / not loged in.
     user.username is stored in
-    :session['logged_user']
+    :session['user']
     """
     if session["user"]:
         user = session['user']
         
         upload_folder = app.config['UPLOAD_FOLDER']
         default_upload_folder = f"{basedir}/{upload_folder}"
-        path_to_home = f"{default_upload_folder}/{user}/home/"
-        user_folder = os.path.join(path_to_home, user)
+        #path_to_home = f"{default_upload_folder}/{user}/home/"
+        #user_folder = os.path.join(path_to_home, user)
         
         path_to_user_root = f"{default_upload_folder}"
         user_folder2 = os.path.join(path_to_user_root, user)

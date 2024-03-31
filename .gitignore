@@ -1,8 +1,13 @@
+# exclude everything
+users_space/*
+
+# exception to the rule
+!users_space/.gitkeep 
+
 # Ignore this folders
 .env
 __pycache__
 /migrations
-users_space
 flask_session
 migrations
 
